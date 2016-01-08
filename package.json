@@ -1,0 +1,34 @@
+{
+  "name": "baiji",
+  "version": "1.0.0",
+  "description": "Baiji is an easy to use and opinionated micro-framework built on top of express for writing scalable and REST-like web APIs. Its main goals are parameter validation, entities, hooks, scalability and allowing rapid development and deployment of such APIs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baijijs/baiji.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "poplar",
+    "express",
+    "validations",
+    "sanitizers",
+    "presenter",
+    "entity",
+    "documentation"
+  ],
+  "author": "Felix Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/baijijs/baiji/issues"
+  },
+  "homepage": "https://github.com/baijijs/baiji#readme",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
