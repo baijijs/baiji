@@ -13,7 +13,6 @@
   "keywords": [
     "rest",
     "api",
-    "poplar",
     "express",
     "validations",
     "sanitizers",
@@ -32,7 +31,8 @@
     "mocha": "^2.3.4"
   },
   "dependencies": {
-    "baiji-normalizer": "^1.0.0",
+    "baiji-normalizer": "^1.0.2",
+    "delegates": "^1.0.0",
     "js2xmlparser": "^1.0.0"
   }
 }
