@@ -32,7 +32,10 @@
   },
   "dependencies": {
     "baiji-normalizer": "^1.0.2",
+    "debug": "^2.2.0",
     "delegates": "^1.0.0",
-    "js2xmlparser": "^1.0.0"
+    "js2xmlparser": "^1.0.0",
+    "minimatch": "^3.0.0",
+    "multer": "^1.1.0"
   }
 }
