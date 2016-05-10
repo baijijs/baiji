@@ -6,13 +6,15 @@ const debug = require('debug')('baiji:examples:express');
 
 let app = baiji('myApp');
 
+app.set('adapterOptions', { arrayItemDelimiters: ',' });
+
 app.enable('x-powered-by');
 
 let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
   debug('before index executed.');
-  setTimeout(next, 500);
+  setTimeout(next, 200);
 });
 
 process.on('uncaughtException', function(e) {
@@ -32,7 +34,8 @@ ArticlesCtrl.after('index', function(ctx, next) {
 ArticlesCtrl.define('index', {
   description: 'fetch article list',
   accepts: [
-    { arg: 'q', type: 'string', description: 'keyword used for searching articles' }
+    { arg: 'q', type: 'string', description: 'keyword used for searching articles' },
+    { arg: 'ids', type: ['number'], description: 'article ids' }
   ],
   http: { verb: 'get', path: '/' }
 }, function(ctx, next) {
