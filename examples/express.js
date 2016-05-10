@@ -6,6 +6,8 @@ const debug = require('debug')('baiji:examples:express');
 
 let app = baiji('myApp');
 
+app.enable('x-powered-by');
+
 let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
