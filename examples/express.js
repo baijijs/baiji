@@ -6,17 +6,6 @@ const debug = require('debug')('baiji:examples:express');
 
 let app = baiji('myApp');
 
-let expressApp = express();
-
-expressApp.get('/info', function(req, res) {
-  throw new Error('fdjslfdsl');
-  res.send('express app info');
-});
-
-console.log(expressApp.toString());
-
-app.use(expressApp, { description: 'express App', name: 'subApp' });
-
 let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
@@ -24,9 +13,9 @@ ArticlesCtrl.before('index', function(ctx, next) {
   setTimeout(next, 500);
 });
 
-// process.on('uncaughtException', function(e) {
-//   console.log(e);
-// });
+process.on('uncaughtException', function(e) {
+  debug('uncaughtException', e);
+});
 
 ArticlesCtrl.before('*', function(ctx, next) {
   debug('before * executed.');
@@ -39,24 +28,27 @@ ArticlesCtrl.after('index', function(ctx, next) {
 });
 
 ArticlesCtrl.define('index', {
-  description: '获取文章列表',
+  description: 'fetch article list',
   accepts: [
     { arg: 'q', type: 'string', description: 'keyword used for searching articles' }
   ],
   http: { verb: 'get', path: '/' }
 }, function(ctx, next) {
-  debug('method executed', ctx._method.fullName());
+  debug('method executed', ctx.methodName);
   ctx.done(ctx.args);
   next();
 });
 
 ArticlesCtrl.define('show', {
-  description: '文章详情',
-  http: { verb: 'get', path: '/detail' }
+  description: 'fetch article detail',
+  accepts: [
+    { arg: 'id', type: 'number', description: 'article id' }
+  ],
+  http: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
-  debug('method executed', ctx._method.fullName());
+  debug('method executed', ctx.methodName);
   ctx.done({
-    title: 'baiji usage',
+    title: 'baiji usage post',
     content: 'see readme.'
   });
   next();
@@ -69,11 +61,19 @@ app.before('*', function(ctx, next) {
 
 app.afterError('*', function(ctx, next) {
   debug('afterError * executed.');
-  debug('afterError =>', ctx.error);
+  debug('afterError =>', ctx.error, ctx.error.stack);
   ctx.done({ error: { name: ctx.error, stack: ctx.error.stack } });
   next();
 });
 
 app.use(ArticlesCtrl, { mountpath: '/articles' });
+
+let expressApp = express();
+
+expressApp.get('/info', function(req, res) {
+  res.send('express app info');
+});
+
+app.use(expressApp, { description: 'express App', name: 'subApp', mountpath: 'subapp' });
 
 app.listen(3005);
