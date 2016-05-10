@@ -9,9 +9,7 @@ let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
   debug('before index executed.');
-  setTimeout(function() {
-    next();
-  }, 2000);
+  setTimeout(next, 500);
 });
 
 ArticlesCtrl.before('*', function(ctx, next) {
@@ -26,21 +24,31 @@ ArticlesCtrl.after('index', function(ctx, next) {
 
 ArticlesCtrl.afterError('*', function(ctx, next) {
   debug('afterError * executed.');
-  debug(ctx.error);
-  ctx.done(ctx.error);
+  debug('afterError =>', ctx.error);
+  ctx.done({ error: { name: ctx.error, stack: ctx.error.stack } });
   next();
 });
 
 ArticlesCtrl.define('index', {
+  description: '获取文章列表',
   accepts: [
     { arg: 'q', type: 'string', description: 'keyword used for searching articles' }
   ],
   http: { verb: 'get', path: '/' }
 }, function(ctx, next) {
   debug('method executed', ctx._method.fullName());
-  ctx.done(ctx.args);
-  // throw new Error('throw error');
-  // return Promise.reject(new Error('promise error'));
+  next();
+});
+
+ArticlesCtrl.define('show', {
+  description: '文章详情',
+  http: { verb: 'get', path: '/' }
+}, function(ctx, next) {
+  debug('method executed', ctx._method.fullName());
+  ctx.done({
+    title: 'baiji usage',
+    content: 'see readme.'
+  });
   next();
 });
 
