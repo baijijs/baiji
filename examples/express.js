@@ -87,13 +87,12 @@ app.afterError('*', function(ctx, next) {
 
 app.use(ArticlesCtrl, { mountpath: '/articles' });
 
-let expressApp = express();
+let subApp = express();
 
-expressApp.get('/info', function(req, res) {
-  throw new Error('fsdlfjdsf');
+subApp.get('/info', function(req, res) {
   res.send('express app info');
 });
 
-app.use(expressApp, { description: 'express App', name: 'subApp', mountpath: 'subApp' });
+app.use(subApp, { description: 'express App', name: 'subApp', mountpath: 'subApp' });
 
 app.listen(3005);
