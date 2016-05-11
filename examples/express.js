@@ -10,6 +10,15 @@ app.set('adapterOptions', { arrayItemDelimiters: ',' });
 
 app.enable('x-powered-by');
 
+app.define('404', {
+  description: 'handle 404',
+  http: { verb: 'all', path: '*' }
+}, function(ctx, next) {
+  debug('method executed', ctx.methodName);
+  ctx.done({ error: { name: '404', message: `no url available for ${ctx.path}` } });
+  next();
+});
+
 let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
@@ -64,6 +73,11 @@ app.before('*', function(ctx, next) {
   next();
 });
 
+app.after('*', function(ctx, next) {
+  debug('after all executed.');
+  next();
+});
+
 app.afterError('*', function(ctx, next) {
   debug('afterError * executed.');
   debug('afterError =>', ctx.error, ctx.error.stack);
@@ -79,6 +93,6 @@ expressApp.get('/info', function(req, res) {
   res.send('express app info');
 });
 
-app.use(expressApp, { description: 'express App', name: 'subApp', mountpath: 'subapp' });
+app.use(expressApp, { description: 'express App', name: 'subApp', mountpath: 'subApp' });
 
 app.listen(3005);
