@@ -40,6 +40,7 @@
     "express": "^4.13.4",
     "js2xmlparser": "^1.0.0",
     "minimatch": "^3.0.0",
-    "multer": "^1.1.0"
+    "multer": "^1.1.0",
+    "on-finished": "^2.3.0"
   }
 }

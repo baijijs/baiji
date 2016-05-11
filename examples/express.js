@@ -90,6 +90,7 @@ app.use(ArticlesCtrl, { mountpath: '/articles' });
 let expressApp = express();
 
 expressApp.get('/info', function(req, res) {
+  throw new Error('fsdlfjdsf');
   res.send('express app info');
 });
 
