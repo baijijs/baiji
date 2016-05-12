@@ -93,6 +93,6 @@ subApp.get('/info', function(req, res) {
   res.send('express app info');
 });
 
-app.use(subApp, { description: 'express App', name: 'subApp', mountpath: 'subApp' });
+app.use(subApp, { desc: 'express App', name: 'subApp', mountpath: 'subApp', skipHooks: false });
 
 app.listen(3005);
