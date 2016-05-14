@@ -12,6 +12,9 @@ Because of this Baiji is an ideal candidate for building robust, scalable and se
 Features
 --------
 * Websocket support
+* Express support
+* RPC support
+* Koa support
 * Built-in parameter validation
 * Entities - a simple Facade to use with your models and API
 * Hooks, enabling the power of scalability of your api method
@@ -19,11 +22,3 @@ Features
 License
 -------
 * Baiji is licensed under the MIT license
-
-TODOs
------
-
-* Add upload files support
-* Add beforeValidation hook
-* Add socket.io support
-* Add koa support
