@@ -4,30 +4,17 @@ const baiji = require('../');
 const express = require('express');
 const debug = require('debug')('baiji:examples:express');
 
-let app = baiji('myApp');
-
-app.set('adapterOptions', { arrayItemDelimiters: ',' });
-
-app.enable('x-powered-by');
-
-app.define('404', {
-  description: 'handle 404',
-  http: { verb: 'all', path: '*' }
-}, function(ctx, next) {
-  debug('method executed', ctx.methodName);
-  ctx.done({ error: { name: '404', message: `no url available for ${ctx.path}` } });
-  next();
+// Handle all uncaughtException avoid node instance crashing
+process.on('uncaughtException', function(e) {
+  debug('uncaughtException', e, e.stack);
 });
 
+// Article Controller
 let ArticlesCtrl = baiji('articles');
 
 ArticlesCtrl.before('index', function(ctx, next) {
   debug('before index executed.');
   setTimeout(next, 200);
-});
-
-process.on('uncaughtException', function(e) {
-  debug('uncaughtException', e, e.stack);
 });
 
 ArticlesCtrl.before('*', function(ctx, next) {
@@ -68,6 +55,30 @@ ArticlesCtrl.define('show', {
   next();
 });
 
+// Main app
+let app = baiji('myApp');
+
+// Allow string to be splited as array by specific delimiters
+app.set('adapterOptions', { arrayItemDelimiters: ',' });
+
+// Enable X-Powered-By
+app.enable('x-powered-by');
+
+// Handle all undefined routes
+app.define('404', {
+  description: 'handle 404',
+  http: { verb: 'all', path: '*' }
+}, function(ctx, next) {
+  debug('method executed', ctx.methodName);
+  ctx.done({
+    error: {
+      name: '404',
+      message: `no url available for ${ctx.path}`
+    }
+  });
+  next();
+});
+
 app.before('*', function(ctx, next) {
   debug('before all executed.');
   next();
@@ -85,15 +96,23 @@ app.afterError('*', function(ctx, next) {
   next();
 });
 
+// Mount Article Controller
 app.use(ArticlesCtrl, { mountpath: '/articles' });
 
+// Init a new express app
 let subApp = express();
 
 subApp.get('/info', function(req, res) {
   res.send('express app info');
 });
 
-app.use(subApp, { desc: 'express App', name: 'subApp', mountpath: 'subApp', skipHooks: false });
+// Mount express app
+app.use(subApp, {
+  name: 'subApp',
+  desc: 'express App',
+  mountpath: 'subApp',
+  skipHooks: false
+});
 
-app.listen(3005);
 debug('app is listening on port 3005');
+app.listen(3005);
