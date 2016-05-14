@@ -1,21 +1,16 @@
 'use strict';
 
 const baiji = require('../');
-const express = require('express');
-const debug = require('debug')('baiji:examples:express');
+const debug = require('debug')('baiji:examples:socketio');
 
 let app = baiji('myApp');
+app.set('adapter', 'socketio');
 
-app.set('adapterOptions', { arrayItemDelimiters: ',' });
-
-app.enable('x-powered-by');
-
-app.define('404', {
-  description: 'handle 404',
-  http: { verb: 'all', path: '*' }
+app.define('*', {
+  description: 'handle unknown method'
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
-  ctx.done({ error: { name: '404', message: `no url available for ${ctx.path}` } });
+  ctx.done({ error: { name: 'no method error', message: `no method called ${ctx.clientMethodName}` } });
   next();
 });
 
@@ -85,15 +80,7 @@ app.afterError('*', function(ctx, next) {
   next();
 });
 
-app.use(ArticlesCtrl, { mountpath: '/articles' });
+app.use(ArticlesCtrl);
 
-let subApp = express();
-
-subApp.get('/info', function(req, res) {
-  res.send('express app info');
-});
-
-app.use(subApp, { desc: 'express App', name: 'subApp', mountpath: 'subApp', skipHooks: false });
-
-app.listen(3005);
-debug('app is listening on port 3005');
+app.listen(3006);
+debug('app is listening on port 3006');
