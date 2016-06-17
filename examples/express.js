@@ -106,6 +106,9 @@ subApp.get('/info', function(req, res) {
   res.send('express app info');
 });
 
+// nested sub app
+app.use(app, { mountpath: '/app' });
+
 // Mount express app
 app.use(subApp, {
   name: 'subApp',
