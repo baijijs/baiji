@@ -1,6 +1,7 @@
 'use strict';
 
 const baiji = require('../');
+const Controller = baiji.Controller;
 const express = require('express');
 const debug = require('debug')('baiji:examples:express');
 
@@ -55,6 +56,63 @@ ArticlesCtrl.define('show', {
   next();
 });
 
+class UsersCtrl extends Controller {
+  constructor() {
+    super();
+    this.setName('users');
+    this.beforeAction('loginRequired', { except: 'index' });
+    this.beforeAction('checkAppExistance');
+    this.beforeAction(function(ctx, next) {
+      debug('custom beforeAction called');
+      next();
+    }, { only: 'show' });
+
+    // init Routes
+    this.initRoutes();
+  }
+
+  initRoutes() {
+    this.route({
+      index: { description: 'user list', http: { path: '/', verb: 'get' } }
+    });
+
+    this.route('show', { description: 'user detail', http: { path: '/:id', verb: 'get' } });
+  }
+
+  loginRequired(ctx, next) {
+    debug('loginRequired executed');
+    next();
+  }
+
+  checkAppExistance(ctx, next) {
+    debug('checkAppExistance executed');
+    next();
+  }
+
+  index(ctx, next) {
+    debug('method executed', ctx.methodName);
+    ctx.done([
+      { id: 1, username: 'felix' },
+      { id: 2, username: 'jenny' }
+    ]);
+    next();
+  }
+
+  show(ctx, next) {
+    debug('method executed', ctx.methodName);
+    this.handleApp();
+    ctx.done({
+      id: 1,
+      username: 'felix'
+    });
+    next();
+  }
+
+  handleApp() {
+    debug('UsersCtrl.prototype.handleApp called');
+  }
+}
+
 // Main app
 let app = baiji('myApp');
 
@@ -98,6 +156,9 @@ app.afterError('*', function(ctx, next) {
 
 // Mount Article Controller
 app.use(ArticlesCtrl, { mountpath: '/articles' });
+
+// Mount User Controller
+app.use(UsersCtrl, { mountpath: '/users' });
 
 // Init a new express app
 let subApp = express();
