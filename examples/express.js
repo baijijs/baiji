@@ -65,7 +65,7 @@ class UsersCtrl extends Controller {
     this.beforeAction(function(ctx, next) {
       debug('custom beforeAction called');
       next();
-    }, { only: 'show' });
+    }, { only: ['show'] });
 
     // init Routes
     this.initRoutes();
@@ -73,10 +73,9 @@ class UsersCtrl extends Controller {
 
   initRoutes() {
     this.route({
-      index: { description: 'user list', http: { path: '/', verb: 'get' } }
+      index: { description: 'user list', http: { path: '/', verb: 'get' } },
+      show: { description: 'user detail', http: { path: '/:id', verb: 'get' } }
     });
-
-    this.route('show', { description: 'user detail', http: { path: '/:id', verb: 'get' } });
   }
 
   loginRequired(ctx, next) {
