@@ -61,6 +61,7 @@ class UsersCtrl extends Controller {
     super();
     this.setName('users');
 
+    // Add hooks
     this.beforeAction('loginRequired', { except: 'index' });
     this.beforeAction('checkAppExistance');
     this.beforeAction(function customBeforeAction(ctx, next) {
