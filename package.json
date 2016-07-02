@@ -1,6 +1,6 @@
 {
   "name": "baiji",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Baiji is an easy to use and opinionated micro-framework for writing scalable and REST-like web APIs. Its main goals are parameter validation, entities, hooks, scalability and allowing rapid development and deployment of such APIs.",
   "main": "index.js",
   "scripts": {
