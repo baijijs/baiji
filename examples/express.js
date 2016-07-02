@@ -60,12 +60,23 @@ class UsersCtrl extends Controller {
   constructor() {
     super();
     this.setName('users');
+
     this.beforeAction('loginRequired', { except: 'index' });
     this.beforeAction('checkAppExistance');
     this.beforeAction(function(ctx, next) {
       debug('custom beforeAction called');
       next();
     }, { only: ['show'] });
+
+    // Below syntax is equel to using `beforeAction`
+    this.preRequest = [
+      ['loginRequired', { except: 'index' }],
+      ['checkAppExistance'],
+      [function(ctx, next) {
+        debug('custom beforeAction called');
+        next();
+      }, { only: ['show'] }]
+    ];
 
     // init Routes
     this.initRoutes();
