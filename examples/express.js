@@ -63,7 +63,7 @@ class UsersCtrl extends Controller {
 
     this.beforeAction('loginRequired', { except: 'index' });
     this.beforeAction('checkAppExistance');
-    this.beforeAction(function(ctx, next) {
+    this.beforeAction(function customBeforeAction(ctx, next) {
       debug('custom beforeAction called');
       next();
     }, { only: ['show'] });
@@ -72,11 +72,21 @@ class UsersCtrl extends Controller {
     this.preRequest = [
       ['loginRequired', { except: 'index' }],
       ['checkAppExistance'],
-      [function(ctx, next) {
+      [function customBeforeAction(ctx, next) {
         debug('custom beforeAction called');
         next();
       }, { only: ['show'] }]
     ];
+
+    // Below syntax is equel to using `beforeAction`
+    this.preRequest([
+      ['loginRequired', { except: 'index' }],
+      ['checkAppExistance'],
+      [function customBeforeAction(ctx, next) {
+        debug('custom beforeAction called');
+        next();
+      }, { only: ['show'] }]
+    ]);
 
     // init Routes
     this.initRoutes();
