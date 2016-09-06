@@ -88,16 +88,13 @@ class UsersCtrl extends Controller {
         next();
       }, { only: ['show'] }]
     ]);
-
-    // init Routes
-    this.initRoutes();
   }
 
   initRoutes() {
-    this.route({
+    return {
       index: { description: 'user list', http: { path: '/', verb: 'get' } },
       show: { description: 'user detail', http: { path: '/:id', verb: 'get' } }
-    });
+    };
   }
 
   loginRequired(ctx, next) {
