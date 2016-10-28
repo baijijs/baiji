@@ -31,8 +31,8 @@ ArticlesCtrl.after('index', function(ctx, next) {
 ArticlesCtrl.define('index', {
   description: 'fetch article list',
   accepts: [
-    { arg: 'q', type: 'string', description: 'keyword used for searching articles' },
-    { arg: 'ids', type: ['number'], description: 'article ids' }
+    { name: 'q', type: 'string', description: 'keyword used for searching articles' },
+    { name: 'ids', type: ['number'], description: 'article ids' }
   ],
   http: { verb: 'get', path: '/' }
 }, function(ctx, next) {
@@ -44,7 +44,7 @@ ArticlesCtrl.define('index', {
 ArticlesCtrl.define('show', {
   description: 'fetch article detail',
   accepts: [
-    { arg: 'id', type: 'number', description: 'article id' }
+    { name: 'id', type: 'number', description: 'article id' }
   ],
   http: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
