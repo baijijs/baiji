@@ -75,7 +75,6 @@ TODOs
 -----
 
 * Add RPC support
-* Add Koa support
 
 License
 -------
