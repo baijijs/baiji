@@ -34,7 +34,7 @@ ArticlesCtrl.define('index', {
     { name: 'q', type: 'string', description: 'keyword used for searching articles' },
     { name: 'ids', type: ['number'], description: 'article ids' }
   ],
-  http: { verb: 'get', path: '/' }
+  route: { verb: 'get', path: '/' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
   ctx.done(ctx.args);
@@ -46,7 +46,7 @@ ArticlesCtrl.define('show', {
   accepts: [
     { name: 'id', type: 'number', description: 'article id' }
   ],
-  http: { verb: 'get', path: '/:id' }
+  route: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
   ctx.done({
@@ -70,30 +70,30 @@ class UsersCtrl extends Controller {
     }, { only: ['show'] });
 
     // Below syntax is equel to using `beforeAction`
-    this.preRequest = [
-      ['loginRequired', { except: 'index' }],
-      ['checkAppExistance'],
-      [function customBeforeAction(ctx, next) {
-        debug('custom beforeAction called');
-        next();
-      }, { only: ['show'] }]
-    ];
+    // this.preRequest = [
+    //   ['loginRequired', { except: 'index' }],
+    //   ['checkAppExistance'],
+    //   [function customBeforeAction(ctx, next) {
+    //     debug('custom beforeAction called');
+    //     next();
+    //   }, { only: ['show'] }]
+    // ];
 
     // Below syntax is equel to using `beforeAction`
-    this.preRequest([
-      ['loginRequired', { except: 'index' }],
-      ['checkAppExistance'],
-      [function customBeforeAction(ctx, next) {
-        debug('custom beforeAction called');
-        next();
-      }, { only: ['show'] }]
-    ]);
+    // this.preRequest([
+    //   ['loginRequired', { except: 'index' }],
+    //   ['checkAppExistance'],
+    //   [function customBeforeAction(ctx, next) {
+    //     debug('custom beforeAction called');
+    //     next();
+    //   }, { only: ['show'] }]
+    // ]);
   }
 
-  initRoutes() {
+  initConfig() {
     return {
-      index: { description: 'user list', http: { path: '/', verb: 'get' } },
-      show: { description: 'user detail', http: { path: '/:id', verb: 'get' } }
+      index: { description: 'user list', route: { path: '/', verb: 'get' } },
+      show: { description: 'user detail', route: { path: '/:id', verb: 'get' } }
     };
   }
 
@@ -143,7 +143,7 @@ app.enable('x-powered-by');
 // Handle all undefined routes
 app.define('404', {
   description: 'handle 404',
-  http: { verb: 'all', path: '*' }
+  route: { verb: 'all', path: '*' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
   ctx.done({
@@ -173,10 +173,10 @@ app.afterError('*', function(ctx, next) {
 });
 
 // Mount Article Controller
-app.use(ArticlesCtrl, { mountpath: '/articles' });
+app.use(ArticlesCtrl, { mountPath: '/articles' });
 
 // Mount User Controller
-app.use(UsersCtrl, { mountpath: '/users' });
+app.use(UsersCtrl, { mountPath: '/users' });
 
 // Init a new express app
 let subApp = express();
@@ -186,13 +186,13 @@ subApp.get('/info', function(req, res) {
 });
 
 // nested sub app
-app.use(app, { mountpath: '/app' });
+app.use(app, { mountPath: '/app' });
 
 // Mount express app
 app.use(subApp, {
   name: 'subApp',
   desc: 'express App',
-  mountpath: 'subApp',
+  mountPath: 'subApp',
   skipHooks: false
 });
 
