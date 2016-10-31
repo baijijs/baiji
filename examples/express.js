@@ -135,7 +135,7 @@ class UsersCtrl extends Controller {
 let app = baiji('myApp');
 
 // Allow string to be splited as array by specific delimiters
-app.set('adapterOptions', { arrayItemDelimiters: ',' });
+app.set('adapterOptions.arrayItemDelimiters', ',');
 
 // Enable X-Powered-By
 app.enable('x-powered-by');
