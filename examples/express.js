@@ -149,7 +149,7 @@ app.define('404', {
   ctx.done({
     error: {
       name: '404',
-      message: `no url available for ${ctx.path}`
+      message: `no url available for ${ctx.method.toUpperCase()} ${ctx.path}`
     }
   });
   next();
