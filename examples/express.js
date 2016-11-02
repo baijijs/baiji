@@ -50,6 +50,7 @@ ArticlesCtrl.define('show', {
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
   ctx.done({
+    id: ctx.args.id,
     title: 'baiji usage post',
     content: 'see readme.'
   });
