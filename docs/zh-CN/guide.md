@@ -92,7 +92,7 @@ class UsersCtrl extends baiji.Controller {
     this.setMountPath('/users');
 
     // 设置过滤器
-    this.beforeAction('signInRequired')
+    this.beforeAction('signInRequired');
   }
 
   // 配置控制器出口方法, 参数以及路由等

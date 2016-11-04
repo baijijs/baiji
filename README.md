@@ -40,11 +40,11 @@ class UsersCtrl extends baiji.Controller {
     this.beforeAction('signInRequired');
   }
 
-  initRoutes() {
+  initConfig() {
     return {
       search: {
         description: 'Search users...',
-        http: { path: '/', verb: 'get' }
+        route: { path: '/', verb: 'get' }
       }
     }
   }
@@ -78,4 +78,4 @@ TODOs
 
 License
 -------
-* Baiji is licensed under the MIT license
+* [The MIT license](LICENSE)
