@@ -197,5 +197,8 @@ app.use(subApp, {
   skipHooks: false
 });
 
+// Enable evaluator plugin
+app.plugin('evaluator');
+
 debug('app is listening on port 3005');
 app.listen(3005);
