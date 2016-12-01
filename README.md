@@ -31,11 +31,6 @@ const app = baiji('my-example-app');
 class UsersCtrl extends baiji.Controller {
   constructor() {
     super();
-    // Set controller name
-    this.setName('users');
-    // Set controller mountpath
-    this.setMountPath('users');
-
     // Use before actions
     this.beforeAction('signInRequired');
   }
