@@ -81,15 +81,9 @@ $ node app.js
 const baiji = require('baiji');
 const app = baiji('using-controller');
 
-class UsersCtrl extends baiji.Controller {
+class UsersController extends baiji.Controller {
   constructor() {
     super();
-
-    // 设置控制器名称
-    this.setName('users');
-
-    // 设置控制器默认挂在地址
-    this.setMountPath('/users');
 
     // 设置过滤器
     this.beforeAction('signInRequired');
