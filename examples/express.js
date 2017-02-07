@@ -69,26 +69,6 @@ class UsersCtrl extends Controller {
       debug('custom beforeAction called');
       next();
     }, { only: ['show'] });
-
-    // Below syntax is equel to using `beforeAction`
-    // this.preRequest = [
-    //   ['loginRequired', { except: 'index' }],
-    //   ['checkAppExistance'],
-    //   [function customBeforeAction(ctx, next) {
-    //     debug('custom beforeAction called');
-    //     next();
-    //   }, { only: ['show'] }]
-    // ];
-
-    // Below syntax is equel to using `beforeAction`
-    // this.preRequest([
-    //   ['loginRequired', { except: 'index' }],
-    //   ['checkAppExistance'],
-    //   [function customBeforeAction(ctx, next) {
-    //     debug('custom beforeAction called');
-    //     next();
-    //   }, { only: ['show'] }]
-    // ]);
   }
 
   initConfig() {
