@@ -147,7 +147,7 @@ describe('class Method', function() {
       });
     });
 
-    describe('invoke()', function() {
+    describe('invoke() && compose(beforeStack, afterStack, errorStack)', function() {
       it('should raise an error if method is not composed', function() {
         expect(function() {
           method.invoke();
