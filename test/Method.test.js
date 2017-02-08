@@ -26,9 +26,13 @@ describe('class Method', function() {
       ['extra', {}],
       ['options', {}]
     ].forEach(function(prop) {
-      it(`should be a valid instance with property '${prop[0]}' and value`, function() {
+      it(`should have property '${prop[0]}' and corresponding value`, function() {
         expect(method).to.have.property(prop[0]).deep.eq(prop[1]);
       });
+    });
+
+    it('should be a valid instance of Method class', function() {
+      expect(method).to.be.an.instanceof(Method);
     });
 
     it('should raise error when params missing `name` property', function() {
