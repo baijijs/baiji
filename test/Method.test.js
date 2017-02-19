@@ -38,7 +38,13 @@ describe('class Method', function() {
     it('should raise error when params missing `name` property', function() {
       expect(function() {
         new Method('test', { params: [{ type: 'any' }] }, function() {});
-      }).to.throw(Error).have.property('message', '`name` is missing for params of `test` method at position 0');
+      }).to.throw(Error).have.property('message', '`name` is missing for params of `test` method at position [0]');
+    });
+
+    it('should raise error when params missing inner params\' deep `name` property', function() {
+      expect(function() {
+        new Method('test', { params: [{ name: 'profile', type: 'any', params: { type: 'string' } }] }, function() {});
+      }).to.throw(Error).have.property('message', '`name` is missing for params of `test` method at position [0].params[0]');
     });
 
     it('should raise an error if there is no function to be executed', function() {

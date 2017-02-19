@@ -76,6 +76,49 @@ describe('class Context', function() {
       expect(context.buildArgs()).to.deep.eq({ username: 'lyfeyaj', age: 27, randomDate: new Date('1998-01-01') });
     });
 
+    it('should build and convert inner params', function() {
+      let method = new Method('test', {
+        params: [
+          { name: 'username', type: 'string' },
+          { name: 'age', type: 'number' },
+          { name: 'randomDate', type: 'date' },
+          {
+            name: 'profile',
+            type: 'object',
+            params: [
+              { name: 'gender', type: 'number' },
+              { name: 'hobbies', type: ['string'] },
+              { name: 'tags', type: ['string'] }
+            ]
+          }
+        ]
+      }, noop);
+      let context = new Context({}, {}, method, { arrayItemDelimiters: ',' });
+      context.args = {
+        name: 'Felix',
+        username: 'lyfeyaj',
+        age: '27',
+        randomDate: '1998-01-01',
+        profile: {
+          gender: '0',
+          hobbies: 'pingpong',
+          tags: 'programmer,writer'
+        }
+      };
+      expect(context.buildArgs()).to.deep.eq(
+        {
+          username: 'lyfeyaj',
+          age: 27,
+          randomDate: new Date('1998-01-01'),
+          profile: {
+            gender: 0,
+            hobbies: ['pingpong'],
+            tags: ['programmer', 'writer']
+          }
+        }
+      );
+    });
+
     it('should split string into array by options.arrayItemDelimiters', function() {
       let method = new Method('test', {
         params: [
