@@ -5,7 +5,7 @@ const Application = require('../lib/Application');
 const Method = require('../lib/Method');
 const Controller = require('../lib/Controller');
 
-const DEFAULT_SETTINGS = { adapter: 'express', env: 'development', description: '', 'x-powered-by': true };
+const DEFAULT_SETTINGS = { adapter: 'express', env: 'development', 'x-powered-by': true };
 
 describe('class Application', function() {
   let app;
