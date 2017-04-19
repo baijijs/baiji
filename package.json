@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "any-promise": "^1.3.0",
-    "baiji-normalizer": "^1.0.6",
+    "baiji-normalizer": "^1.0.7",
     "body-parser": "^1.17.1",
     "chalk": "^1.1.3",
     "cors": "^2.8.3",
