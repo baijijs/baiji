@@ -30,7 +30,7 @@ ArticlesCtrl.after('index', function(ctx, next) {
 
 ArticlesCtrl.define('index', {
   description: 'fetch article list',
-  accepts: [
+  params: [
     { name: 'q', type: 'string', description: 'keyword used for searching articles' },
     { name: 'ids', type: ['number'], description: 'article ids' }
   ],
@@ -43,7 +43,7 @@ ArticlesCtrl.define('index', {
 
 ArticlesCtrl.define('show', {
   description: 'fetch article detail',
-  accepts: [
+  params: [
     { name: 'id', type: 'number', description: 'article id' }
   ],
   route: { verb: 'get', path: '/:id' }
