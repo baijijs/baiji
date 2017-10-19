@@ -18,3 +18,6 @@ createApplication.Controller = Controller;
 
 // Expose `Method`
 createApplication.Method = Method;
+
+// Add version reference
+createApplication.VERSION = require('../package.json').version;
