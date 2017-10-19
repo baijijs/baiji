@@ -20,4 +20,4 @@ createApplication.Controller = Controller;
 createApplication.Method = Method;
 
 // Add version reference
-createApplication.VERSION = Application.VERSION = require('../package.json').version;
+createApplication.VERSION = Application.VERSION = require('./package.json').version;
