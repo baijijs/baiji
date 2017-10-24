@@ -14,10 +14,10 @@ function createApplication(name, settings) {
 createApplication.Application = Application;
 
 // Expose `Controller`
-createApplication.Controller = Controller;
+createApplication.Controller = Application.Controller = Controller;
 
 // Expose `Method`
-createApplication.Method = Method;
+createApplication.Method = Application.Method = Method;
 
 // Add version reference
 createApplication.VERSION = Application.VERSION = require('./package.json').version;
