@@ -7,7 +7,7 @@
 
 > Under active development
 
-Baiji (https://github.com/baijijs/baiji) is an easy to use and opinionated micro-framework for writing scalable and REST-like web applications.
+[Baiji](https://github.com/baijijs/baiji) is an easy to use and opinionated micro-framework for writing scalable and REST-like web applications.
 
 Baiji is an ideal candidate for building robust, scalable and secure web things.
 
