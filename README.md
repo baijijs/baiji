@@ -1,11 +1,9 @@
-[Baiji](https://en.wikipedia.org/wiki/Baiji) (白鱀豚)
+[Baiji](https://en.wikipedia.org/wiki/Baiji) (🐬 白鱀豚)
 =======
 
 [![Build Status](https://travis-ci.org/baijijs/baiji.svg?branch=master)](https://travis-ci.org/baijijs/baiji)
 
 >> Bring the 🐬(beauty) back to life.
-
-> Under active development
 
 [Baiji](https://github.com/baijijs/baiji) is an easy to use and opinionated micro-framework for writing scalable and REST-like web applications.
 
