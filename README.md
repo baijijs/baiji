@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/baijijs/baiji.svg?branch=master)](https://travis-ci.org/baijijs/baiji)
 
->> Bring the beauty back to life.
+>> Bring the 🐬(beauty) back to life.
 
 > Under active development
 
