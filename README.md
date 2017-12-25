@@ -1,4 +1,4 @@
-[Baiji](https://en.wikipedia.org/wiki/Baiji) (🐬 白鱀豚)
+[Baiji](https://en.wikipedia.org/wiki/Baiji) (白鱀豚 🐬)
 =======
 
 [![Build Status](https://travis-ci.org/baijijs/baiji.svg?branch=master)](https://travis-ci.org/baijijs/baiji)
