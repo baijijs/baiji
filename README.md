@@ -13,7 +13,7 @@ Baiji is an ideal candidate for building robust, scalable and secure web things.
 
 Features
 --------
-* Adapters support: (Express)[https://github.com/expressjs/express], [Socket.io](https://github.com/socketio/socket.io), more supports will comming soon
+* Adapters support: [Express](https://github.com/expressjs/express), [Socket.io](https://github.com/socketio/socket.io), more supports will comming soon
 * Hooks, enabling the power of scalability of your api method
 * Modern Controller syntax
 * Smart routes sorter
