@@ -84,15 +84,15 @@ describe('class Application', function() {
     });
 
     it('should define a new method and added to app', function() {
-      expect(app).to.have.deep.property('methods.length', 0);
+      expect(app).to.have.nested.property('methods.length', 0);
       app.define(methodName, methodSettings, methodFn);
-      expect(app).to.have.deep.property('methods.length', 1);
+      expect(app).to.have.nested.property('methods.length', 1);
     });
 
     it('should add a method instance', function() {
-      expect(app).to.have.deep.property('methods.length', 0);
+      expect(app).to.have.nested.property('methods.length', 0);
       app.define(method);
-      expect(app).to.have.deep.property('methods.length', 1);
+      expect(app).to.have.nested.property('methods.length', 1);
     });
   });
 
@@ -109,7 +109,7 @@ describe('class Application', function() {
         pluginInvoked = true;
       };
       app.plugin(plugin, {});
-      expect(pluginInvoked).to.be.true;
+      expect(pluginInvoked).to.eq(true);
     });
 
     it('should invoke multiple plugins with options', function() {
@@ -274,7 +274,7 @@ describe('class Application', function() {
       app.set('abc', 1);
       app.set('person.gender', 'male');
       expect(app.settings).to.have.a.property('abc', 1);
-      expect(app.settings).to.have.a.deep.property('person.gender', 'male');
+      expect(app.settings).to.have.a.nested.property('person.gender', 'male');
     });
   });
 

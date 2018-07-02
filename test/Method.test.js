@@ -77,7 +77,7 @@ describe('class Method', function() {
   describe('prototype', function() {
     describe('isSupport(adapterName)', function() {
       it('should return false if invalid adapter name passed', function() {
-        expect(method.isSupport('abc')).to.be.false;
+        expect(method.isSupport('abc')).to.eq(false);
       });
 
       [
@@ -86,7 +86,7 @@ describe('class Method', function() {
         'socketio'
       ].forEach(function(adapterName) {
         it(`should return true if '${adapterName}' passed`, function() {
-          expect(method.isSupport(adapterName)).to.be.true;
+          expect(method.isSupport(adapterName)).to.eq(true);
         });
       });
     });
