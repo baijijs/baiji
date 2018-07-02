@@ -60,7 +60,7 @@ describe('class Context', function() {
 
     it('should parse arrayItemDelimiters options as regexp', function() {
       let context = new Context({}, {}, method, { arrayItemDelimiters: [',', ' '] });
-      expect(context).to.have.nested.property('options.arrayItemDelimiters').eq(/,| /g);
+      expect(context).to.have.nested.property('options.arrayItemDelimiters').to.match(/,| /g);
     });
   });
 
