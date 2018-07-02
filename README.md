@@ -2,6 +2,9 @@
 =======
 
 [![Build Status](https://travis-ci.org/baijijs/baiji.svg?branch=master)](https://travis-ci.org/baijijs/baiji)
+[![npm version](https://badge.fury.io/js/baiji.svg)](https://badge.fury.io/js/baiji)
+[![npm](https://img.shields.io/npm/dt/baiji.svg)]()
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/lyfeyaj/baiji/master/LICENSE.md)
 
 >> Bring the 🐬(beauty) back to life.
 
