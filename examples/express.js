@@ -1,6 +1,7 @@
 'use strict';
 
 const baiji = require('../');
+const path = require('path');
 const Controller = baiji.Controller;
 const express = require('express');
 const debug = require('debug')('baiji:examples:express');
@@ -37,7 +38,7 @@ ArticlesCtrl.define('index', {
   route: { verb: 'get', path: '/' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
-  ctx.done(ctx.args);
+  ctx.respond(ctx.args);
   next();
 });
 
@@ -49,7 +50,7 @@ ArticlesCtrl.define('show', {
   route: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
-  ctx.done({
+  ctx.respond({
     id: ctx.args.id,
     title: 'baiji usage post',
     content: 'see readme.'
@@ -73,8 +74,22 @@ class UsersCtrl extends Controller {
 
   initConfig() {
     return {
-      index: { description: 'user list', route: { path: '/', verb: 'get' } },
-      show: { description: 'user detail', route: { path: '/:id', verb: 'get' } }
+      index: {
+        description: 'user list',
+        route: { path: '/', verb: 'get' }
+      },
+      show: {
+        description: 'user detail',
+        route: { path: '/:id', verb: 'get' }
+      },
+      uploadAvatar: {
+        description: 'upload user avatar',
+        upload: {
+          fields: [{ name: 'avatar', maxCount: 1 }],
+          dest: path.join(__dirname, './uploadAvatar')
+        },
+        route: { path: '/upload_avatar', verb: 'post' }
+      }
     };
   }
 
@@ -90,7 +105,7 @@ class UsersCtrl extends Controller {
 
   index(ctx, next) {
     debug('method executed', ctx.methodName);
-    ctx.done([
+    ctx.respond([
       { id: 1, username: 'felix' },
       { id: 2, username: 'jenny' }
     ]);
@@ -100,11 +115,17 @@ class UsersCtrl extends Controller {
   show(ctx, next) {
     debug('method executed', ctx.methodName);
     this.handleApp();
-    ctx.done({
+    ctx.respond({
       id: 1,
       username: 'felix'
     });
     next();
+  }
+
+  uploadAvatar(ctx, next) {
+    debug('method executed', ctx.methodName);
+    debug('body parameters', ctx.body);
+    ctx.respond(ctx.files, next);
   }
 
   handleApp() {
@@ -127,7 +148,7 @@ app.define('404', {
   route: { verb: 'all', path: '*' }
 }, function(ctx, next) {
   debug('method executed', ctx.methodName);
-  ctx.done({
+  ctx.respond({
     error: {
       name: '404',
       message: `no url available for ${ctx.method.toUpperCase()} ${ctx.path}`
@@ -149,7 +170,7 @@ app.after('*', function(ctx, next) {
 app.afterError('*', function(ctx, next) {
   debug('afterError * executed.');
   debug('afterError =>', ctx.error, ctx.error.stack);
-  ctx.done({ error: { name: ctx.error, stack: ctx.error.stack } });
+  ctx.respond({ error: { name: ctx.error, stack: ctx.error.stack } });
   next();
 });
 
@@ -179,6 +200,8 @@ app.use(subApp, {
 
 // Enable evaluator plugin
 app.plugin('evaluator');
+
+app.set('upload', { dest: path.join(__dirname, './upload') });
 
 debug('app is listening on port 3005');
 app.listen(3005);
