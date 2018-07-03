@@ -157,7 +157,7 @@ describe('class Action', function() {
       });
     });
 
-    describe('invoke() && compose(beforeStack, afterStack, errorStack)', function() {
+    describe('invoke() && compose(hooks = {})', function() {
       it('should raise an error if action is not composed', function() {
         expect(function() {
           action.invoke();
@@ -182,7 +182,11 @@ describe('class Action', function() {
           function(context, next) { array.push(6); next(); },
         ];
 
-        action.compose(beforeStack, afterStack, errorStack);
+        action.compose({
+          before: beforeStack,
+          after: afterStack,
+          error: errorStack
+        });
 
         action.invoke().then(function() {
           expect(array).to.deep.eq([1, 2, 3, 4, 5]);
@@ -207,7 +211,11 @@ describe('class Action', function() {
           function(context, next) { array.push(6); next(); }
         ];
 
-        action.compose(beforeStack, afterStack, errorStack);
+        action.compose({
+          before: beforeStack,
+          after: afterStack,
+          error: errorStack
+        });
 
         action.invoke().then(function() {
           expect(array).to.deep.eq([1, 2, 3, 6]);
