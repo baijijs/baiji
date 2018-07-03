@@ -166,4 +166,26 @@ describe('class Context', function() {
       }).to.throw(Error).have.property('message', 'Not Implement');
     });
   });
+
+  describe('injectProps(obj)', function() {
+    it('should inject properties into context instance', function() {
+      let obj = {
+        models: { User: {} },
+        entities: { user: {} }
+      };
+
+      context.injectProps(obj);
+
+      expect(context).to.have.property('models', obj.models);
+      expect(context).to.have.property('entities', obj.entities);
+    });
+
+    it('should raise error if duplicated property detected when calling injectProps', function() {
+      context.injectProps({ models: null });
+
+      expect(function() {
+        context.injectProps({ models: null });
+      }).to.throw(Error);
+    });
+  });
 });
