@@ -51,12 +51,12 @@ describe('class Controller', function() {
     });
 
     Object.getOwnPropertyNames(Controller.prototype).forEach(function(name) {
-      it(`should raise an error if internal method '${name}' is overwritten`, function() {
+      it(`should raise an error if internal action '${name}' is overwritten`, function() {
         if (name === 'constructor') return;
         Ctrl.prototype[name] = function() {};
         expect(function() {
           new Ctrl();
-        }).to.throw(Error).and.have.property('message', `Method: \`${name}\` is reserved by baiji.Controller, please rename it`);
+        }).to.throw(Error).and.have.property('message', `Action: \`${name}\` is reserved by baiji.Controller, please rename it`);
       });
     });
   });
@@ -103,7 +103,7 @@ describe('class Controller', function() {
     });
   });
 
-  describe('configure(nameOrConfigs, methodConfig)', function() {
+  describe('configure(nameOrConfigs, actionConfig)', function() {
     it('should be able to config via object', function() {
       ctrl.configure({ abc: 1 });
       expect(ctrl.__configs).to.have.property('abc', 1);
@@ -122,10 +122,10 @@ describe('class Controller', function() {
     'afterError'
   ].forEach(function(hookName) {
     describe(`${hookName}Action(nameOrFn, options)`, function() {
-      it('should raise an error if there is no action method can be found', function() {
+      it('should raise an error if there is no action can be found', function() {
         expect(function() {
-          ctrl[`${hookName}Action`]('non_existed_method');
-        }).to.throw(Error).to.have.property('message', 'No method named \'non_existed_method\' defined');
+          ctrl[`${hookName}Action`]('non_existed_action');
+        }).to.throw(Error).to.have.property('message', 'No action named \'non_existed_action\' defined');
       });
 
       it(`should set ${hookName} actions`, function() {
@@ -231,10 +231,10 @@ describe('class Controller', function() {
         ctrl[`${hookName}Action`]('filterUser');
       });
 
-      it('should raise an error if there is no action method can be found', function() {
+      it('should raise an error if there is no action can be found', function() {
         expect(function() {
-          ctrl[`skip${HookName}Action`]('non_existed_method');
-        }).to.throw(Error).to.have.property('message', 'No method named \'non_existed_method\' defined');
+          ctrl[`skip${HookName}Action`]('non_existed_action');
+        }).to.throw(Error).to.have.property('message', 'No action named \'non_existed_action\' defined');
       });
 
       it(`should skip ${hookName} actions`, function() {

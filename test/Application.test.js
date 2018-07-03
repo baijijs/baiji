@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const Application = require('../lib/Application');
-const Method = require('../lib/Method');
+const Action = require('../lib/Action');
 const Controller = require('../lib/Controller');
 
 const DEFAULT_SETTINGS = { adapter: 'express', env: 'development', 'x-powered-by': true };
@@ -21,7 +21,7 @@ describe('class Application', function() {
       ['afterHooks', {}],
       ['afterErrorHooks', {}],
       ['settings', DEFAULT_SETTINGS],
-      ['methods', []],
+      ['actions', []],
       ['mountedApps', []],
       ['locals', { settings: DEFAULT_SETTINGS }],
       ['mountPath', '/']
@@ -65,34 +65,34 @@ describe('class Application', function() {
   });
 
   describe('define()', function() {
-    let methodName, methodFn, methodSettings, method;
+    let actionName, actionFn, actionSettings, action;
 
     beforeEach(function() {
-      methodName = 'test';
-      methodFn = function() {};
-      methodSettings = {
-        description: 'method description',
+      actionName = 'test';
+      actionFn = function() {};
+      actionSettings = {
+        description: 'action description',
         params: [{ name: 'gender', type: 'string' }],
         route: { path: 'test', verb: 'post' }
       };
-      method = new Method(methodName, methodSettings, methodFn);
+      action = new Action(actionName, actionSettings, actionFn);
     });
 
-    it('should add app as method parent', function() {
-      app.define(method);
-      expect(app.methods[0]).to.have.property('parent', app);
+    it('should add app as action parent', function() {
+      app.define(action);
+      expect(app.actions[0]).to.have.property('parent', app);
     });
 
-    it('should define a new method and added to app', function() {
-      expect(app).to.have.nested.property('methods.length', 0);
-      app.define(methodName, methodSettings, methodFn);
-      expect(app).to.have.nested.property('methods.length', 1);
+    it('should define a new action and added to app', function() {
+      expect(app).to.have.nested.property('actions.length', 0);
+      app.define(actionName, actionSettings, actionFn);
+      expect(app).to.have.nested.property('actions.length', 1);
     });
 
-    it('should add a method instance', function() {
-      expect(app).to.have.nested.property('methods.length', 0);
-      app.define(method);
-      expect(app).to.have.nested.property('methods.length', 1);
+    it('should add a action instance', function() {
+      expect(app).to.have.nested.property('actions.length', 0);
+      app.define(action);
+      expect(app).to.have.nested.property('actions.length', 1);
     });
   });
 
@@ -156,7 +156,7 @@ describe('class Application', function() {
       'afterErrorHooks',
       'locals',
       'mountedApps',
-      'methods'
+      'actions'
     ].forEach(function() {
 
     });
@@ -197,13 +197,13 @@ describe('class Application', function() {
       });
     });
 
-    it('should have all methods added', function() {
-      expect(cloned.methods).to.have.property('length').eq(app.methods.length);
-      cloned.methods.forEach(function(method, i) {
-        let originalMethod = app.methods[i];
-        expect(method).not.eq(originalMethod);
-        expect(method).to.have.property('parent').eq(cloned);
-        expect(method).to.have.property('name').eq(originalMethod.name);
+    it('should have all actions added', function() {
+      expect(cloned.actions).to.have.property('length').eq(app.actions.length);
+      cloned.actions.forEach(function(action, i) {
+        let originalAction = app.actions[i];
+        expect(action).not.eq(originalAction);
+        expect(action).to.have.property('parent').eq(cloned);
+        expect(action).to.have.property('name').eq(originalAction.name);
       });
     });
   });
@@ -211,7 +211,7 @@ describe('class Application', function() {
   describe('use(fn, options)', function() {
     it('should be able to use an express or socketio middleware', function() {
       app.use(function() {});
-      expect(app.methods.length).to.eq(1);
+      expect(app.actions.length).to.eq(1);
     });
 
     it('should be able to use an app', function() {
@@ -252,20 +252,20 @@ describe('class Application', function() {
       expect(subApp).to.have.a.property('parent').to.eq(app);
       expect(subApp).to.have.a.property('name').to.eq('users');
 
-      let methodsLength = 2;
-      let beforeHooksLength = methodsLength + 1;
+      let actionsLength = 2;
+      let beforeHooksLength = actionsLength + 1;
       let afterHooksLength = 2;
       let afterErrorHooksLength = 2;
       expect(Object.keys(subApp.beforeHooks).length).to.eq(beforeHooksLength);
       expect(Object.keys(subApp.afterHooks).length).to.eq(afterHooksLength);
       expect(Object.keys(subApp.afterErrorHooks).length).to.eq(afterErrorHooksLength);
-      expect(subApp.methods.length).eq(methodsLength);
+      expect(subApp.actions.length).eq(actionsLength);
     });
 
-    it('should be able to use a method', function() {
-      let method = new Method('test', {}, function() {});
-      app.use(method, {});
-      expect(app.methods.length).to.eq(1);
+    it('should be able to use a action', function() {
+      let action = new Action('test', {}, function() {});
+      app.use(action, {});
+      expect(app.actions.length).to.eq(1);
     });
   });
 

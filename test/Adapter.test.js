@@ -27,8 +27,8 @@ describe('class Adapter', function() {
     [
       ['app', function() { return app; }],
       ['options', {}],
-      ['methods', []],
-      ['sortedMethods', []]
+      ['actions', []],
+      ['sortedActions', []]
     ].forEach(function(prop) {
       it(`should have property '${prop[0]}' and corresponding value`, function() {
         let value = typeof prop[1] === 'function' ? prop[1]() : prop[1];
@@ -37,29 +37,29 @@ describe('class Adapter', function() {
     });
   });
 
-  describe('createMethodsBy(wrapper)', function() {
+  describe('createActionsBy(wrapper)', function() {
     it('should raise an error if wrapper is not a valid function', function() {
       expect(function() {
-        adapter.createMethodsBy('abc');
+        adapter.createActionsBy('abc');
       }).to.throw(Error).have.property('message', 'abc is not a valid wrapper function');
     });
 
-    it('should filter methods by supported adapter', function() {
+    it('should filter actions by supported adapter', function() {
       app.define('test', {
         adapter: 'express'
       }, function() {});
 
       app.set('adapter', 'express');
-      let methods = adapter.createMethodsBy(noop);
-      expect(methods).to.have.property('length', 1);
-      expect(methods[0]).to.have.property('name', 'test.test');
-      expect(methods[0]).to.have.property('description', 'test');
-      expect(methods[0]).to.have.property('verb', 'all');
-      expect(methods[0]).to.have.property('path', '/');
-      expect(methods[0]).to.have.property('handler');
+      let actions = adapter.createActionsBy(noop);
+      expect(actions).to.have.property('length', 1);
+      expect(actions[0]).to.have.property('name', 'test.test');
+      expect(actions[0]).to.have.property('description', 'test');
+      expect(actions[0]).to.have.property('verb', 'all');
+      expect(actions[0]).to.have.property('path', '/');
+      expect(actions[0]).to.have.property('handler');
 
       app.set('adapter', 'socketio');
-      expect(adapter.createMethodsBy(noop)).to.have.property('length', 0);
+      expect(adapter.createActionsBy(noop)).to.have.property('length', 0);
     });
   });
 
@@ -95,15 +95,15 @@ describe('class Adapter', function() {
     });
   });
 
-  describe('debugAllMethods(isDebug)', function() {
+  describe('debugAllActions(isDebug)', function() {
     it('should return debug messages', function() {
       app.define('test', {
         adapter: 'express'
       }, function() {});
-      adapter.methods = adapter.createMethodsBy(noop);
+      adapter.actions = adapter.createActionsBy(noop);
 
-      expect(adapter.debugAllMethods()).to.deep.eq([
-        'All Methods: (1)',
+      expect(adapter.debugAllActions()).to.deep.eq([
+        'All Actions: (1)',
         '=> test.test ALL / test'
       ]);
     });
