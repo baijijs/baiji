@@ -37,7 +37,7 @@ ArticlesCtrl.define('index', {
   ],
   route: { verb: 'get', path: '/' }
 }, function(ctx, next) {
-  debug('method executed', ctx.methodName);
+  debug('method executed', ctx.actionName);
   ctx.respond(ctx.args);
   next();
 });
@@ -49,7 +49,7 @@ ArticlesCtrl.define('show', {
   ],
   route: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
-  debug('method executed', ctx.methodName);
+  debug('method executed', ctx.actionName);
   ctx.respond({
     id: ctx.args.id,
     title: 'baiji usage post',
@@ -70,6 +70,8 @@ class UsersCtrl extends Controller {
       debug('custom beforeAction called');
       next();
     }, { only: ['show'] });
+
+    this.beforeRespond('handleResult');
   }
 
   initConfig() {
@@ -98,13 +100,18 @@ class UsersCtrl extends Controller {
     next();
   }
 
+  handleResult() {
+    debug('handleResult executed');
+    return { changed: 'aha' };
+  }
+
   checkAppExistance(ctx, next) {
     debug('checkAppExistance executed');
     next();
   }
 
   index(ctx, next) {
-    debug('method executed', ctx.methodName);
+    debug('method executed', ctx.actionName);
     ctx.respond([
       { id: 1, username: 'felix' },
       { id: 2, username: 'jenny' }
@@ -113,7 +120,7 @@ class UsersCtrl extends Controller {
   }
 
   show(ctx, next) {
-    debug('method executed', ctx.methodName);
+    debug('method executed', ctx.actionName);
     this.handleApp();
     ctx.respond({
       id: 1,
@@ -123,7 +130,7 @@ class UsersCtrl extends Controller {
   }
 
   uploadAvatar(ctx, next) {
-    debug('method executed', ctx.methodName);
+    debug('method executed', ctx.actionName);
     debug('body parameters', ctx.body);
     ctx.respond(ctx.files, next);
   }
@@ -147,7 +154,7 @@ app.define('404', {
   description: 'handle 404',
   route: { verb: 'all', path: '*' }
 }, function(ctx, next) {
-  debug('method executed', ctx.methodName);
+  debug('method executed', ctx.actionName);
   ctx.respond({
     error: {
       name: '404',
