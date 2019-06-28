@@ -91,9 +91,9 @@ describe('class Action', function() {
       });
     });
 
-    describe('fullPath()', function() {
+    describe('fullPath', function() {
       it('should return expected full path with or without parent object', function() {
-        expect(action.fullPath()).to.be.eq('/');
+        expect(action.fullPath).to.be.eq('/');
 
         action.parent = {
           fullPath: function() {
@@ -103,7 +103,7 @@ describe('class Action', function() {
 
         action.route.path = '/profile';
 
-        expect(action.fullPath()).to.be.eq('/users/profile');
+        expect(action.fullPath).to.be.eq('/users/profile');
       });
     });
 
@@ -141,9 +141,9 @@ describe('class Action', function() {
       });
     });
 
-    describe('fullName()', function() {
+    describe('fullName', function() {
       it('should return expected full name with or without parent object', function() {
-        expect(action.fullName()).to.be.eq('test');
+        expect(action.fullName).to.be.eq('test');
 
         action.parent = {
           fullName: function() {
@@ -153,7 +153,7 @@ describe('class Action', function() {
 
         action.route.path = '/profile';
 
-        expect(action.fullName()).to.be.eq('users.test');
+        expect(action.fullName).to.be.eq('users.test');
       });
     });
 

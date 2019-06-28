@@ -36,34 +36,6 @@ describe('class Application', function() {
     });
   });
 
-  describe('setName(name)', function() {
-    it('should change app name', function() {
-      expect(app).to.have.a.property('name', 'test');
-      app.setName('app');
-      expect(app).to.have.a.property('name', 'app');
-    });
-  });
-
-  describe('getName()', function() {
-    it('should return app name', function() {
-      expect(app.getName()).to.eq(app.name);
-    });
-  });
-
-  describe('setMountPath(path)', function() {
-    it('should change app mount path', function() {
-      expect(app).to.have.property('mountPath', '/');
-      app.setMountPath('/my-app');
-      expect(app).to.have.property('mountPath', '/my-app');
-    });
-  });
-
-  describe('getMountPath()', function() {
-    it('should return app mount path', function() {
-      expect(app.getMountPath()).to.eq(app.mountPath);
-    });
-  });
-
   describe('define()', function() {
     let actionName, actionFn, actionSettings, action;
 
@@ -319,9 +291,9 @@ describe('class Application', function() {
     });
   });
 
-  describe('fullName()', function() {
+  describe('fullName', function() {
     it('should return expected full name with or without parent object', function() {
-      expect(app.fullName()).to.be.eq('test');
+      expect(app.fullName).to.be.eq('test');
 
       app.parent = {
         fullName: function() {
@@ -329,15 +301,15 @@ describe('class Application', function() {
         }
       };
 
-      expect(app.fullName()).to.be.eq('users.test');
+      expect(app.fullName).to.be.eq('users.test');
     });
   });
 
-  describe('fullPath()', function() {
+  describe('fullPath', function() {
     it('should return expected full path with or without parent object', function() {
-      expect(app.fullPath()).to.be.eq('/');
+      expect(app.fullPath).to.be.eq('/');
 
-      app.setMountPath('/test');
+      app.mountPath = '/test';
 
       app.parent = {
         fullPath: function() {
@@ -345,7 +317,7 @@ describe('class Application', function() {
         }
       };
 
-      expect(app.fullPath()).to.be.eq('/users/test');
+      expect(app.fullPath).to.be.eq('/users/test');
     });
   });
 });
