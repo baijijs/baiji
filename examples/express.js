@@ -8,7 +8,8 @@ const debug = require('debug')('baiji:examples:express');
 
 // Handle all uncaughtException avoid node instance crashing
 process.on('uncaughtException', function(e) {
-  debug('uncaughtException', e, e.stack);
+  // eslint-disable-next-line
+  console.log('uncaughtException', e, e.stack);
 });
 
 // Article Controller
@@ -31,10 +32,10 @@ ArticlesCtrl.after('index', function(ctx, next) {
 
 ArticlesCtrl.define('index', {
   description: 'fetch article list',
-  params: [
-    { name: 'q', type: 'string', description: 'keyword used for searching articles' },
-    { name: 'ids', type: ['number'], description: 'article ids' }
-  ],
+  params: {
+    q: { type: 'string', description: 'keyword used for searching articles' },
+    ids: { type: ['number'], description: 'article ids' }
+  },
   route: { verb: 'get', path: '/' }
 }, function(ctx, next) {
   debug('method executed', ctx.actionName);
@@ -44,12 +45,15 @@ ArticlesCtrl.define('index', {
 
 ArticlesCtrl.define('show', {
   description: 'fetch article detail',
-  params: [
-    { name: 'id', type: 'number', description: 'article id' }
-  ],
+  params: {
+    id: { type: 'number', description: 'article id' }
+  },
   route: { verb: 'get', path: '/:id' }
 }, function(ctx, next) {
   debug('method executed', ctx.actionName);
+  console.log({
+    id: 1
+  });
   ctx.respond({
     id: ctx.args.id,
     title: 'baiji usage post',

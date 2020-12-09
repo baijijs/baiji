@@ -61,48 +61,6 @@ describe('class Controller', function() {
     });
   });
 
-  describe('setName(name)', function() {
-    it('should set correct name', function() {
-      expect(ctrl).to.have.property('name', 'test');
-      ctrl.setName('abc');
-      expect(ctrl).to.have.property('name', 'abc');
-    });
-  });
-
-  describe('getName()', function() {
-    it('should get correct name', function() {
-      expect(ctrl.getName()).to.eq('test');
-    });
-  });
-
-  describe('setBasePath(basePath)', function() {
-    it('should set correct basePath', function() {
-      expect(ctrl).to.have.property('basePath', '/');
-      ctrl.setBasePath('/abc');
-      expect(ctrl).to.have.property('basePath', '/abc');
-    });
-  });
-
-  describe('getBasePath()', function() {
-    it('should get correct basePath', function() {
-      expect(ctrl.getBasePath()).to.eq('/');
-    });
-  });
-
-  describe('setMountPath(basePath)', function() {
-    it('should set correct mountPath', function() {
-      expect(ctrl).to.have.property('mountPath', 'test');
-      ctrl.setMountPath('/abc');
-      expect(ctrl).to.have.property('mountPath', '/abc');
-    });
-  });
-
-  describe('getMountPath()', function() {
-    it('should get correct mountPath', function() {
-      expect(ctrl.getMountPath()).to.eq('/test');
-    });
-  });
-
   describe('configure(nameOrConfigs, actionConfig)', function() {
     it('should be able to config via object', function() {
       ctrl.configure({ abc: 1 });
@@ -119,7 +77,7 @@ describe('class Controller', function() {
   [
     'before',
     'after',
-    'afterError'
+    'onError'
   ].forEach(function(hookName) {
     describe(`${hookName}Action(nameOrFn, options)`, function() {
       it('should raise an error if there is no action can be found', function() {
@@ -221,7 +179,7 @@ describe('class Controller', function() {
   [
     'before',
     'after',
-    'afterError'
+    'onError'
   ].forEach(function(hookName) {
     let HookName = hookName.replace(/^[a-z]/, function(r) { return r.toUpperCase(); });
 
