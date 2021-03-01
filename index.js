@@ -2,7 +2,7 @@
 
 const Application = require('./lib/Application');
 const Controller = require('./lib/Controller');
-const Method = require('./lib/Method');
+const Action = require('./lib/Action');
 
 module.exports = createApplication;
 
@@ -16,8 +16,8 @@ createApplication.Application = Application;
 // Expose `Controller`
 createApplication.Controller = Application.Controller = Controller;
 
-// Expose `Method`
-createApplication.Method = Application.Method = Method;
+// Expose `Action`
+createApplication.Action = Application.Action = Action;
 
 // Add version reference
 createApplication.VERSION = Application.VERSION = require('./package.json').version;

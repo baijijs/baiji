@@ -2,24 +2,24 @@
 
 const expect = require('chai').expect;
 const Context = require('../lib/Context');
-const Method = require('../lib/Method');
+const Action = require('../lib/Action');
 
 describe('class Context', function() {
-  let context, method;
+  let context, action;
   let noop = function() {};
 
   beforeEach(function() {
-    method = new Method('test', {
+    action = new Action('test', {
       params: [
         { name: 'username', type: 'string' },
         { name: 'age', type: 'number' },
         { name: 'randomDate', type: 'date' }
       ]
     }, noop);
-    context = new Context({}, {}, method, {});
+    context = new Context({}, {}, action, {});
   });
 
-  describe('constructor(req, res, method, options)', function() {
+  describe('constructor(req, res, action, options)', function() {
     it('should raise an error if req is invalid', function() {
       expect(function() {
         new Context();
@@ -32,10 +32,10 @@ describe('class Context', function() {
       }).to.throw(Error).have.property('message', 'res is invalid');
     });
 
-    it('should raise an error if method is invalid', function() {
+    it('should raise an error if action is invalid', function() {
       expect(function() {
         new Context({}, {});
-      }).to.throw(Error).have.property('message', 'method must be an instance of Method');
+      }).to.throw(Error).have.property('message', 'action must be an instance of Action');
     });
 
     [
@@ -44,8 +44,8 @@ describe('class Context', function() {
       ['response', function() { return { context }; }],
       ['res', function() { return { context }; }],
       ['options', {}],
-      ['_method', function() { return method; }],
-      ['methodName', 'test'],
+      ['action', function() { return action; }],
+      ['actionName', 'test'],
       ['fullPath', '/'],
       ['argsBuilt', false],
       ['args', {}],
@@ -59,13 +59,13 @@ describe('class Context', function() {
     });
 
     it('should parse arrayItemDelimiters options as regexp', function() {
-      let context = new Context({}, {}, method, { arrayItemDelimiters: [',', ' '] });
-      expect(context).to.have.deep.property('options.arrayItemDelimiters').eq(/,| /g);
+      let context = new Context({}, {}, action, { arrayItemDelimiters: [',', ' '] });
+      expect(context).to.have.nested.property('options.arrayItemDelimiters').to.match(/,| /g);
     });
   });
 
   describe('buildArgs()', function() {
-    it('should build args by method params config', function() {
+    it('should build args by action params config', function() {
       let date = new Date('1998-01-01');
       context.args = { name: 'Felix', username: 'lyfeyaj', age: 27, randomDate: date };
       expect(context.buildArgs()).to.deep.eq({ username: 'lyfeyaj', age: 27, randomDate: date });
@@ -77,7 +77,7 @@ describe('class Context', function() {
     });
 
     it('should build and convert inner params', function() {
-      let method = new Method('test', {
+      let action = new Action('test', {
         params: [
           { name: 'username', type: 'string' },
           { name: 'age', type: 'number' },
@@ -93,7 +93,7 @@ describe('class Context', function() {
           }
         ]
       }, noop);
-      let context = new Context({}, {}, method, { arrayItemDelimiters: ',' });
+      let context = new Context({}, {}, action, { arrayItemDelimiters: ',' });
       context.args = {
         name: 'Felix',
         username: 'lyfeyaj',
@@ -120,12 +120,12 @@ describe('class Context', function() {
     });
 
     it('should split string into array by options.arrayItemDelimiters', function() {
-      let method = new Method('test', {
+      let action = new Action('test', {
         params: [
           { name: 'hobbies', type: ['string'] }
         ]
       }, noop);
-      let context = new Context({}, {}, method, { arrayItemDelimiters: ',' });
+      let context = new Context({}, {}, action, { arrayItemDelimiters: ',' });
       context.args = { hobbies: 'pingpong,table tennis,swimming,badminton' };
       expect(context.buildArgs()).to.deep.eq({ hobbies: ['pingpong', 'table tennis', 'swimming', 'badminton'] });
     });
@@ -164,6 +164,28 @@ describe('class Context', function() {
       expect(function() {
         context.done();
       }).to.throw(Error).have.property('message', 'Not Implement');
+    });
+  });
+
+  describe('injectProps(obj)', function() {
+    it('should inject properties into context instance', function() {
+      let obj = {
+        models: { User: {} },
+        entities: { user: {} }
+      };
+
+      context.injectProps(obj);
+
+      expect(context).to.have.property('models', obj.models);
+      expect(context).to.have.property('entities', obj.entities);
+    });
+
+    it('should raise error if duplicated property detected when calling injectProps', function() {
+      context.injectProps({ models: null });
+
+      expect(function() {
+        context.injectProps({ models: null });
+      }).to.throw(Error);
     });
   });
 });

@@ -51,12 +51,12 @@ describe('class Controller', function() {
     });
 
     Object.getOwnPropertyNames(Controller.prototype).forEach(function(name) {
-      it(`should raise an error if internal method '${name}' is overwritten`, function() {
+      it(`should raise an error if internal action '${name}' is overwritten`, function() {
         if (name === 'constructor') return;
         Ctrl.prototype[name] = function() {};
         expect(function() {
           new Ctrl();
-        }).to.throw(Error).and.have.property('message', `Method: \`${name}\` is reserved by baiji.Controller, please rename it`);
+        }).to.throw(Error).and.have.property('message', `Action: \`${name}\` is reserved by baiji.Controller, please rename it`);
       });
     });
   });
@@ -103,7 +103,7 @@ describe('class Controller', function() {
     });
   });
 
-  describe('configure(nameOrConfigs, methodConfig)', function() {
+  describe('configure(nameOrConfigs, actionConfig)', function() {
     it('should be able to config via object', function() {
       ctrl.configure({ abc: 1 });
       expect(ctrl.__configs).to.have.property('abc', 1);
@@ -122,16 +122,16 @@ describe('class Controller', function() {
     'afterError'
   ].forEach(function(hookName) {
     describe(`${hookName}Action(nameOrFn, options)`, function() {
-      it('should raise an error if there is no action method can be found', function() {
+      it('should raise an error if there is no action can be found', function() {
         expect(function() {
-          ctrl[`${hookName}Action`]('non_existed_method');
-        }).to.throw(Error).to.have.property('message', 'No method named \'non_existed_method\' defined');
+          ctrl[`${hookName}Action`]('non_existed_action');
+        }).to.throw(Error).to.have.property('message', 'No action named \'non_existed_action\' defined');
       });
 
       it(`should set ${hookName} actions`, function() {
         ctrl.filterUser = function() {};
         ctrl[`${hookName}Action`]('filterUser');
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: [],
@@ -144,7 +144,7 @@ describe('class Controller', function() {
         ctrl.filterUser = function() {};
         ctrl[`${hookName}Action`]('filterUser', { except: 'index' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: ['index'],
@@ -156,7 +156,7 @@ describe('class Controller', function() {
 
         ctrl[`${hookName}Action`]('filterUser', { except: '*' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: ['*'],
@@ -168,7 +168,7 @@ describe('class Controller', function() {
 
         ctrl[`${hookName}Action`]('filterUser', { except: ['index', 'show'] });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: ['index', 'show'],
@@ -181,7 +181,7 @@ describe('class Controller', function() {
         ctrl.filterUser = function() {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: [],
@@ -193,7 +193,7 @@ describe('class Controller', function() {
 
         ctrl[`${hookName}Action`]('filterUser', { only: '*' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: [],
@@ -205,7 +205,7 @@ describe('class Controller', function() {
 
         ctrl[`${hookName}Action`]('filterUser', { only: ['index', 'show'] });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser`).deep.eq({
           fn: ctrl.filterUser,
           options: {
             except: [],
@@ -231,15 +231,15 @@ describe('class Controller', function() {
         ctrl[`${hookName}Action`]('filterUser');
       });
 
-      it('should raise an error if there is no action method can be found', function() {
+      it('should raise an error if there is no action can be found', function() {
         expect(function() {
-          ctrl[`skip${HookName}Action`]('non_existed_method');
-        }).to.throw(Error).to.have.property('message', 'No method named \'non_existed_method\' defined');
+          ctrl[`skip${HookName}Action`]('non_existed_action');
+        }).to.throw(Error).to.have.property('message', 'No action named \'non_existed_action\' defined');
       });
 
       it(`should skip ${hookName} actions`, function() {
         ctrl[`skip${HookName}Action`]('filterUser');
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           except: ['*'],
           only: []
         });
@@ -248,7 +248,7 @@ describe('class Controller', function() {
       it('should skip filters by `except` option', function() {
         ctrl[`skip${HookName}Action`]('filterUser', { except: 'index' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['index'],
           except: []
         });
@@ -256,7 +256,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser');
         ctrl[`skip${HookName}Action`]('filterUser', { except: '*' });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['*'],
           except: []
         });
@@ -264,7 +264,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser');
         ctrl[`skip${HookName}Action`]('filterUser', { except: ['index', 'show'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['index', 'show'],
           except: []
         });
@@ -272,7 +272,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index' });
         ctrl[`skip${HookName}Action`]('filterUser', { except: ['show'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['show'],
           except: []
         });
@@ -280,7 +280,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index' });
         ctrl[`skip${HookName}Action`]('filterUser', { except: ['index'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['index'],
           except: []
         });
@@ -290,7 +290,7 @@ describe('class Controller', function() {
         ctrl.filterUser = function() {};
         ctrl[`skip${HookName}Action`]('filterUser', { only: 'index' });
 
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['*'],
           except: ['index']
         });
@@ -298,7 +298,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser');
         ctrl[`skip${HookName}Action`]('filterUser', { only: '*' });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: [],
           except: ['*']
         });
@@ -306,7 +306,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser');
         ctrl[`skip${HookName}Action`]('filterUser', { only: ['index', 'show'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['*'],
           except: ['index', 'show']
         });
@@ -314,7 +314,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index' });
         ctrl[`skip${HookName}Action`]('filterUser', { only: ['show'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: ['index'],
           except: ['show']
         });
@@ -322,7 +322,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index' });
         ctrl[`skip${HookName}Action`]('filterUser', { only: ['index'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: [],
           except: ['index']
         });
@@ -330,7 +330,7 @@ describe('class Controller', function() {
         ctrl.__hooksConfig = {};
         ctrl[`${hookName}Action`]('filterUser', { only: 'index', except: 'show' });
         ctrl[`skip${HookName}Action`]('filterUser', { only: ['index'] });
-        expect(ctrl.__hooksConfig).to.have.deep.property(`${hookName}.filterUser.options`).deep.eq({
+        expect(ctrl.__hooksConfig).to.have.nested.property(`${hookName}.filterUser.options`).deep.eq({
           only: [],
           except: ['show', 'index']
         });
