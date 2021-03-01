@@ -35,7 +35,7 @@
     "node": ">=4"
   },
   "dependencies": {
-    "baiji-normalizer": "^1.0.8",
+    "baiji-normalizer": "^1.0.9",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
